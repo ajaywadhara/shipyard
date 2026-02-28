@@ -1,0 +1,21 @@
+{
+  "name": "shipyard-marketplace",
+  "description": "Shipyard for Claude Code — from random thought to shipped, tested product in 10 commands.",
+  "metadata": {
+    "description": "Shipyard — 10 slash commands covering discovery, research, wireframes, architecture, TDD build, Playwright MCP browser testing, 8-agent QA loop, bug fixing, and coverage review. Your product's shipyard."
+  },
+  "owner": {
+    "name": "Ajay Wadhara"
+  },
+  "plugins": [
+    {
+      "name": "shipyard",
+      "source": {
+        "source": "github",
+        "repo": "ajaywadhara/shipyard"
+      },
+      "description": "Shipyard — 10 slash commands from idea to production. Discovery, research, wireframes, architecture, TDD build, interactive browser testing via Playwright MCP, 8-agent QA, bug fixing, coverage review.",
+      "version": "1.1.0"
+    }
+  ]
+}
