@@ -1,7 +1,7 @@
 {
   "name": "shipyard",
-  "version": "1.1.0",
-  "description": "Shipyard — your product's shipyard for Claude Code. 10 slash commands that take you from random thought to shipped, tested product. Discovery, research, wireframes, architecture, TDD build, Playwright MCP browser testing, 8-agent QA, bug fixing, and coverage review.",
+  "version": "1.2.0",
+  "description": "Shipyard — your product's shipyard for Claude Code. 13 slash commands that take you from random thought to shipped, tested product. Discovery, research, wireframes, architecture, TDD build, code review, Playwright MCP browser testing, 8-agent QA, bug fixing, coverage review, shipping, and pipeline status.",
   "author": "Ajay Wadhara",
   "license": "MIT",
   "keywords": [

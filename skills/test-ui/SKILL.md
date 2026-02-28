@@ -235,14 +235,8 @@ For each flow and interaction tested above:
      tests/e2e/$FEATURE-a11y.spec.ts        — accessibility assertions
      tests/e2e/$FEATURE-errors.spec.ts      — error state tests
 
-  4. EVERY test must use semantic locators only:
-     ALLOWED:   getByRole('button', { name: 'Submit' })
-     ALLOWED:   getByLabel('Email')
-     ALLOWED:   getByText('Welcome back')
-     ALLOWED:   getByTestId('transaction-list')
-     FORBIDDEN: page.$('.class-name')
-     FORBIDDEN: page.$('#id')
-     FORBIDDEN: page.$x('//xpath')
+  4. Follow the Playwright locator rules in CLAUDE.md — semantic locators only.
+     (getByRole, getByLabel, getByText, getByTestId — never CSS/XPath selectors)
 
   5. Run every generated test:
      npx playwright test tests/e2e/$FEATURE-ui.spec.ts

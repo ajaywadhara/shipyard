@@ -1,6 +1,6 @@
 # Shipyard — Claude Code Plugin
 
-**Your product's shipyard. From random thought to shipped, tested product in 10 commands.**
+**Your product's shipyard. From random thought to shipped, tested product in 13 commands.**
 
 ## Install
 
@@ -16,7 +16,7 @@ claude plugin marketplace add ajaywadhara/shipyard
 claude plugin add ajaywadhara/shipyard
 ```
 
-That's it. All 10 commands are now available in every project.
+That's it. All 13 commands are now available in every project.
 
 ---
 
@@ -24,16 +24,19 @@ That's it. All 10 commands are now available in every project.
 
 Most developers jump straight to code. Then they discover they built the wrong thing, have no tests, and no clue if it works on mobile.
 
-Shipyard fixes that. It gives Claude Code a **complete software development lifecycle** — the same process that takes teams weeks, compressed into slash commands:
+Shipyard fixes that. It gives Claude Code a **complete software development lifecycle** — the same process that takes teams weeks, compressed into 13 slash commands:
 
 - **You never write a PRD from scratch** — `/start` interviews you and writes it
 - **You never skip competitive research** — `/research` finds competitors, reads their 1-star reviews, and finds your angle
 - **You never design in your head** — `/wireframe` generates clickable HTML prototypes you can open in a browser
 - **You never argue about tech stack** — `/architect` makes opinionated decisions with justifications
 - **You never write code without tests first** — `/build` enforces TDD (RED → GREEN → REFACTOR)
+- **You never ship security holes or dead code** — `/review` catches OWASP vulnerabilities, compliance issues, and performance anti-patterns before expensive testing
 - **You never manually test in a browser** — `/test-ui` opens a real browser via Playwright MCP, clicks every button, fills every form, and generates permanent test files
 - **You never ship without QA** — `/qa-run` runs an 8-agent loop that scores quality on a 100-point scale (must score ≥ 85 to pass)
 - **You never let bugs escape twice** — `/fix-bug` creates a regression test before fixing anything
+- **You never manually create PRs** — `/ship` runs final checks, generates a changelog, and creates a structured PR
+- **You always know where you are** — `/status` shows pipeline progress at a glance
 - **Your test suite grows automatically** — from ~20 tests on day 1 to 700+ by month 6
 
 > **The key insight:** never guess what the UI looks like — always browse it first. Playwright MCP lets the agent see and interact with the real running app, so every test uses real selectors from the live DOM, not assumptions.
@@ -45,16 +48,19 @@ Shipyard fixes that. It gives Claude Code a **complete software development life
 ```
 Your idea (just thoughts)
   │
-  ▼  /start         → Brain dump conversation → PRD.md
-  ▼  /research      → Competitors, 1-star reviews, your angle
-  ▼  /wireframe     → Clickable HTML prototypes (open in browser)
-  ▼  /architect     → Stack decisions, CLAUDE.md, project scaffold + Playwright MCP
-  ▼  /build [feat]  → TDD: spec (RED) → implement (GREEN) → refactor
-  ▼  /test-ui [feat]→ Playwright MCP: browse live app, test every element, generate tests
-  ▼  /qa-run [feat] → 8-agent QA loop, quality gate (score ≥ 85)
-  ▼  /fix-bug       → Bug → regression test → fix → permanent test
-  ▼  /coverage-review → Find and fill test gaps
-  ▼  /figma-sync    → (Optional) Align code to Figma designs
+  ▼  /start            → Brain dump conversation → PRD.md
+  ▼  /research         → Competitors, 1-star reviews, your angle
+  ▼  /wireframe        → Clickable HTML prototypes (open in browser)
+  ▼  /architect        → Stack decisions, CLAUDE.md, project scaffold + Playwright MCP
+  ▼  /build [feat]     → TDD: spec (RED) → implement (GREEN) → refactor
+  ▼  /review [feat]    → Security, compliance, performance check
+  ▼  /test-ui [feat]   → Playwright MCP: browse live app, test every element, generate tests
+  ▼  /qa-run [feat]    → 8-agent QA loop, quality gate (score ≥ 85)
+  ▼  /fix-bug          → Bug → regression test → fix → permanent test
+  ▼  /coverage-review  → Find and fill test gaps
+  ▼  /ship             → PR, changelog, release, pre-push checks
+  ▼  /figma-sync       → (Optional) Align code to Figma designs
+  ▼  /status           → Where am I in the pipeline?
 ```
 
 ---
@@ -130,6 +136,29 @@ Build one feature at a time using test-driven development.
 
 The spec and implementation agents run in separate contexts so tests reflect requirements, not implementation convenience.
 
+**Next:** `/review [feature-name]`
+
+---
+
+### `/review [feature-name]` — Pre-QA Code Review
+
+Catch security issues, dead code, and performance problems before expensive browser testing.
+
+**4 checks:**
+
+| Check | What it finds |
+|-------|--------------|
+| **Security** | OWASP top 10: SQL injection, XSS, command injection, path traversal, hardcoded secrets |
+| **CLAUDE.md Compliance** | Naming conventions, file organization, import patterns, component patterns |
+| **Dead Code** | Unused imports, unreachable code, commented-out blocks, empty catch blocks |
+| **Performance** | N+1 queries, missing pagination, synchronous heavy ops, bundle bloat, React re-render traps |
+
+**Severity levels:**
+- **CRITICAL** — blocks. Must fix before `/test-ui`
+- **WARNING** — flag. Should fix before `/ship`
+- **INFO** — note. Consider fixing
+
+**Output:** `qa/reviews/$FEATURE-review.md`
 **Next:** `/test-ui [feature-name]` (for web apps) or `/qa-run [feature-name]`
 
 ---
@@ -219,6 +248,44 @@ Find and fill gaps in test coverage.
 - Finds screens with no E2E test
 - Writes new tests (no implementation changes)
 - Reports to `qa/COVERAGE_GAPS.md`
+
+---
+
+### `/ship` — Ship It
+
+Close the pipeline. Final checks, changelog, PR, and optional release tag.
+
+1. **Pre-flight** — clean git status, not on main, QA score >= 85
+2. **Final test suite** — runs all unit + e2e tests one last time
+3. **Lint & type check** — runs project lint/typecheck scripts
+4. **Changelog** — auto-generates from git commits (Added/Changed/Fixed)
+5. **Create PR** — structured summary with test results and QA score via `gh`
+6. **Tag release** — optional, if version provided or on release branch
+
+**Output:** PR on GitHub, updated `CHANGELOG.md`, optional git tag
+
+---
+
+### `/status` — Pipeline Progress
+
+See where you are in the Shipyard pipeline at a glance.
+
+```
+Shipyard Pipeline Status
+────────────────────────
+  [done] /start            → docs/PRD.md (Feb 25)
+  [done] /research         → docs/research/VERDICT.md (Feb 25)
+  [next] /wireframe        → wireframes/ not found
+  [ ]    /architect
+  [ ]    /build
+  [ ]    /review
+  [ ]    /test-ui
+  [ ]    /qa-run
+
+Next step: run /wireframe
+```
+
+Checks for each pipeline artifact, shows the last QA score if available, and suggests the next command to run.
 
 ---
 
@@ -351,6 +418,10 @@ claude mcp add playwright npx '@playwright/mcp@latest'
 /build [feature]
   │  Code is written and unit tests pass
   ▼
+/review [feature]
+  │  Security, compliance, performance check
+  │  Fix CRITICAL issues before proceeding
+  ▼
 /test-ui [feature]                          ← Playwright MCP
   │  Agent opens real browser
   │  Navigates every screen
@@ -361,12 +432,15 @@ claude mcp add playwright npx '@playwright/mcp@latest'
   │  Auto-generates .spec.ts test files
   ▼
 /qa-run [feature]
-  │  Browser Agent explores live app first   ← Playwright MCP
+  │  Browser Agent skipped if /test-ui just ran
   │  Analyst maps testable surfaces
   │  Engineer uses REAL selectors from browser_snapshot
   │  (never guesses selectors — always from live app)
   │  Sentinel audits, Healer fixes, Expander adds edge cases
   │  Quality gate: score ≥ 85 to pass
+  ▼
+/ship
+  │  Final tests, changelog, PR, release tag
   ▼
 CI Pipeline
 ```

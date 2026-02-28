@@ -68,12 +68,14 @@ Spawn REFACTOR AGENT:
 
 ━━━ STEP 6: HAND OFF ━━━
 
-For web applications (UI features), run BOTH:
-  /test-ui $FEATURE  — interactive browser testing via Playwright MCP
-  /qa-run $FEATURE   — full 8-agent QA loop
+First, run a quick code review:
+  /review $FEATURE   — security, compliance, dead code, performance check
 
-/test-ui explores the live app and generates initial Playwright test files.
-/qa-run then runs the complete QA pipeline including those generated tests.
+If /review reports CRITICAL issues: fix them before proceeding.
+
+Then, for web applications (UI features):
+  /test-ui $FEATURE  — interactive browser testing via Playwright MCP
+  /qa-run $FEATURE   — full 8-agent QA loop (skips Browser Agent if /test-ui just ran)
 
 For non-UI features (API, data layer, utilities):
   /qa-run $FEATURE   — skip /test-ui, go straight to QA loop

@@ -11,6 +11,15 @@ Ensure the dev server is running before proceeding.
 
 ━━━ BROWSER AGENT (Playwright MCP — runs first) ━━━
 
+SKIP CONDITION: If qa/browser-tests/$FEATURE/exploration.md exists AND was
+modified within the last hour (check file modification time):
+  → Skip the entire Browser Agent (Steps A through F)
+  → Read the existing qa/browser-tests/$FEATURE/exploration.md
+  → Log: "Browser Agent skipped — reusing recent /test-ui exploration data."
+  → Proceed directly to Analyst Agent
+
+Otherwise, run the Browser Agent as normal:
+
 Before writing ANY test file, explore the live application using Playwright MCP.
 This is non-negotiable for web applications. You MUST see the real app first.
 
@@ -109,15 +118,8 @@ For each scenario in qa/plans/$FEATURE-prioritized.md:
 
 Write all tests to: tests/e2e/$FEATURE.spec.ts
 
-Playwright rules — these are absolute, no exceptions:
-  ALLOWED:   getByRole('button', { name: 'Save' })
-  ALLOWED:   getByLabel('Email address')
-  ALLOWED:   getByText('No transactions yet')
-  ALLOWED:   getByTestId('transaction-list')
-  FORBIDDEN: page.$('.save-btn')
-  FORBIDDEN: page.$('#submit')
-  FORBIDDEN: page.$x('//button[@class="primary"]')
-  FORBIDDEN: page.waitForTimeout(3000) <- use expect().toBeVisible() instead
+Follow the Playwright locator rules in CLAUDE.md — semantic locators only.
+  (getByRole, getByLabel, getByText, getByTestId — never CSS/XPath selectors)
 
 Every test must:
   - Have a descriptive name explaining what it verifies
