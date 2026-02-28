@@ -18,6 +18,23 @@ claude plugin add ajaywadhara/shipyard
 
 That's it. All 13 commands are now available in every project.
 
+**Per-project only** (if you prefer):
+
+```bash
+cp -r skills/ your-project/.claude/skills/
+```
+
+### Which scope should you use?
+
+| Situation | Recommendation | How to install |
+|-----------|---------------|----------------|
+| Solo dev, want it everywhere | Global install | `claude plugin marketplace add ajaywadhara/shipyard` |
+| Team project, everyone needs same commands | Per-project | `cp -r skills/ your-project/.claude/skills/` and commit to git |
+| Trying it out on one project first | Per-project | `cp -r skills/ your-project/.claude/skills/` |
+| Mixed — some global, some project-specific | Both | Global install + override specific skills in `.claude/skills/` |
+
+> **Note:** Project-level skills override global ones if names collide. So you can install globally and selectively override per project.
+
 ---
 
 ## Why use this?
